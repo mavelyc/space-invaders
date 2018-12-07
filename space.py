@@ -50,19 +50,46 @@ def move_right():
     player.setx(x)
 
 
+#Create invaders
+enemy = turtle.Turtle()
+enemy.color('red')
+enemy.shape("circle")
+enemy.penup()
+enemy.speed(0)
+enemy.setposition(-200,250)
+
+enemyspeed = 2
+
+
+
+
+
 #keyboard bindings
 turtle.listen()
 turtle.onkey(move_left,"Left")
 turtle.onkey(move_right,"Right")
 
 
+#Main game loop
+while True:
 
+    #move the enemy
+    x = enemy.xcor()
+    x += enemyspeed
+    enemy.setx(x)
 
+    #move enemy back and down
+    if enemy.xcor()>280:
+        y = enemy.ycor()
+        y -= 40
+        enemyspeed *= -1
+        enemy.sety(y)
 
-
-
-
-
+    if enemy.xcor()<-280:
+        y= enemy.ycor()
+        y -= 40
+        enemyspeed*=-1
+        enemy.sety(y)
 
 
 
