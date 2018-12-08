@@ -31,6 +31,34 @@ player.speed(0)
 player.setposition(0,-250)
 player.setheading(90)
 
+#create gun
+bullet = turtle.Turtle()
+bullet.color("yellow")
+bullet.shape("triangle")
+bullet.penup()
+bullet.speed(0)
+bullet.setheading(90)
+bullet.shapesize(0.5,0.5)
+bullet.hideturtle()
+
+#bullet movement
+bulletspeed = 20
+
+#Define bullet state
+#ready - ready to fire
+#fire - bullet is firing
+bulletstate = "ready"
+
+def fire_bullet():
+    global bulletstate
+    if bulletstate == "ready":
+        bulletstate = "fire"
+        #move bullet just above player
+        x = player.xcor()
+        y = player.ycor() + 10
+        bullet.setposition(x,y)
+        bullet.showturtle()
+
 
 #player movement
 playerspeed = 15
@@ -61,13 +89,11 @@ enemy.setposition(-200,250)
 enemyspeed = 2
 
 
-
-
-
 #keyboard bindings
 turtle.listen()
 turtle.onkey(move_left,"Left")
 turtle.onkey(move_right,"Right")
+turtle.onkey(fire_bullet,"space")
 
 
 #Main game loop
@@ -91,6 +117,16 @@ while True:
         enemyspeed*=-1
         enemy.sety(y)
 
+    #move bullet
+    if bulletstate == "fire":
+        y = bullet.ycor()
+        y += bulletspeed
+        bullet.sety(y)
+
+    #check to see if bullet reached top
+    if bullet.ycor() > 275:
+        bullet.hideturtle()
+        bulletstate = "ready"
 
 
 delay = raw_input("Press enter to finish")
