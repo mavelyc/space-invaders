@@ -3,6 +3,7 @@
 
 import turtle
 import os
+import math
 
 #Screen
 main = turtle.Screen()
@@ -60,6 +61,13 @@ def fire_bullet():
         bullet.showturtle()
 
 
+def isCollision(t1, t2):
+    distance = math.sqrt(math.pow(t1.xcor()-t2.xcor(),2)+math.pow(t1.ycor()-t2.ycor(),2))
+    if distance<15:
+        return True
+    else:
+        return False
+
 #player movement
 playerspeed = 15
 
@@ -84,7 +92,7 @@ enemy.color('red')
 enemy.shape("circle")
 enemy.penup()
 enemy.speed(0)
-enemy.setposition(-200,250)
+enemy.setposition(-200,-200)
 
 enemyspeed = 2
 
@@ -127,6 +135,24 @@ while True:
     if bullet.ycor() > 275:
         bullet.hideturtle()
         bulletstate = "ready"
+
+    #check for bullet and enemy collision
+    if isCollision(bullet,enemy):
+        #reset the bullet
+        bullet.hideturtle()
+        bulletstate = "ready"
+        bullet.setposition(0,-400)
+        #Reset the enemy
+        enemy.setposition(-200,250)
+
+    #enemy collides with player
+    if isCollision(player,enemy):
+        player.hideturtle()
+        enemy.hideturtle()
+        print("Game Over")
+        break
+
+
 
 
 delay = raw_input("Press enter to finish")
